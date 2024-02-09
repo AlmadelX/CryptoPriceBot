@@ -1,0 +1,4 @@
+{
+    "command:help:description": "Помощь в работе с ботом",
+    "command:price:description": "Узнать стоимость криптоактива"
+}
