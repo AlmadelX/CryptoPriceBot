@@ -1,5 +1,6 @@
 import { Bot } from 'grammy';
 
+import startHandler from './handlers/startHandler';
 import text from '../assets/text.json';
 
 async function setupBot(token: string): Promise<Bot> {
@@ -13,8 +14,8 @@ async function setupBot(token: string): Promise<Bot> {
         },
     ]);
 
-    bot.command('start', ctx => ctx.reply('Welcome!'));
-    bot.on('message', ctx => ctx.reply('Pong'));
+    bot.command('start', startHandler);
+    bot.on('message', (ctx) => ctx.reply('Pong'));
 
     return bot;
 }
