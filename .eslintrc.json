@@ -17,5 +17,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "eol-last": "error",
+        "max-len": ["error", 100],
+        "sort-imports": "error"
     }
 }
