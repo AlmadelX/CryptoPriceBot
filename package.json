@@ -1,0 +1,23 @@
+{
+    "name": "cryptopricebot",
+    "version": "1.0.0",
+    "description": "Telegram bot for tracking cryptocurrencies/tokens' prices",
+    "main": "dist/main.js",
+    "types": "dist/main.d.ts",
+    "scripts": {
+        "start": "npx tsc && node dist/main.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AlmadelX/CryptoPriceBot.git"
+    },
+    "author": "AlmadelX",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/AlmadelX/CryptoPriceBot/issues"
+    },
+    "homepage": "https://github.com/AlmadelX/CryptoPriceBot#readme",
+    "devDependencies": {
+        "typescript": "^5.3.3"
+    }
+}
