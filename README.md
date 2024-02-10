@@ -9,7 +9,7 @@ https://www.docker.com/products/docker-desktop/)
 ```
 BOT_TOKEN=token
 ```
-4. Откройте терминал в созданной папке и запустите следующие команду:
+4. Откройте терминал в созданной папке и запустите следующие команды:
 ```
 docker pull almadelx/crypto-price-bot
 docker run -d --env-file ./env.txt almadelx/crypto-price-bot
