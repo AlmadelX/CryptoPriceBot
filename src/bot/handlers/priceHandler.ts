@@ -12,6 +12,10 @@ import text from '../../../assets/text.json';
 export default async function priceHandler(ctx: CommandContext<Context>): Promise<Message.TextMessage> {
     const query = ctx.match;
 
+    if (query.trim() === '') {
+        return ctx.reply(text['command:price:empty-query']);
+    }
+
     return getPriceOfCryptocurrency(query)
         .then(price => ctx.reply(`$${price}`))
         .catch(error => {
