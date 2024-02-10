@@ -9,8 +9,12 @@ https://www.docker.com/products/docker-desktop/)
 ```
 BOT_TOKEN=token
 ```
-4. Откройте терминал в созданной папке и запустите следующую команду:
+4. Откройте терминал в созданной папке и запустите следующие команду:
 ```
+docker pull almadelx/crypto-price-bot
 docker run -d --env-file ./env.txt almadelx/crypto-price-bot
 ```
-5. Статус и логи бота можно отслеживать в Docker Desktop
+
+## Дополнительная инфорамция
+- Отслеживать статус бота и логи можно в Docker Desktop
+- В случае обновления достаточно остановить контейнер бота в Docker Desktop и выполнить команды из пункта 4 инструкции
