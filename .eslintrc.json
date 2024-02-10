@@ -19,6 +19,11 @@
     "rules": {
         "eol-last": "error",
         "max-len": ["error", 120],
-        "sort-imports": "error"
+        "sort-imports": [
+            "error",
+            {
+                "allowSeparatedGroups": true
+            }
+        ]
     }
 }

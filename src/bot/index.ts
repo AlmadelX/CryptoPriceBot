@@ -5,7 +5,7 @@ import helpHandler from './handlers/helpHandler';
 import priceHandler from './handlers/priceHandler';
 import startHandler from './handlers/startHandler';
 
-import text from '../assets/text.json';
+import text from '../../assets/text.json';
 
 async function setupBot(token: string): Promise<Bot> {
     const bot = new Bot(token);

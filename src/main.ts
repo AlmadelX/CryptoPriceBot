@@ -1,12 +1,18 @@
-import 'dotenv/config';
+// import 'dotenv/config';
 
-import runBot from './bot';
+import getPriceOfCryptocurrency from './services/CoinMarketCap';
 
-const token = process.env.BOT_TOKEN;
+// import runBot from './bot';
 
-if (token) {
-    runBot(token);
-} else {
-    console.log('Error: BOT_TOKEN is not specified!');
-    process.exit(1);
-}
+// const token = process.env.BOT_TOKEN;
+
+// if (token) {
+//     runBot(token);
+// } else {
+//     console.log('Error: BOT_TOKEN is not specified!');
+//     process.exit(1);
+// }
+
+getPriceOfCryptocurrency('rndr')
+    .then(price => console.log(price))
+    .catch(error => console.log(error));
