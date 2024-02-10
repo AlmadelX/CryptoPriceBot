@@ -5,8 +5,9 @@
     "main": "dist/main.js",
     "types": "dist/main.d.ts",
     "scripts": {
-        "prestart": "rimraf dist/*",
-        "start": "npx tsc && node dist/main.js",
+        "clear": "rimraf dist/*",
+        "build": "tsc",
+        "start": "npm run clear && npm run build && node dist/src/main.js",
         "lint": "eslint . --ext .ts"
     },
     "repository": {
