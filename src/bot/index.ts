@@ -1,4 +1,5 @@
 import { Bot } from 'grammy';
+import { run } from '@grammyjs/runner';
 
 import fallbackHandler from './handlers/fallbackHandler';
 import helpHandler from './handlers/helpHandler';
@@ -31,5 +32,5 @@ export default async function runBot(token: string): Promise<void> {
     const bot = await setupBot(token);
 
     console.log('Bot started');
-    bot.start().then(() => console.log('Bot finished'));
+    run(bot);
 }
