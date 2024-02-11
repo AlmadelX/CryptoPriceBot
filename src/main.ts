@@ -1,6 +1,6 @@
 // import 'dotenv/config';
 
-import { getSearchSuggestions } from './services/CoinMarketCap/api/globalSearch';
+import { getCryptocurrency } from './services/CoinMarketCap/api/listing';
 
 // import runBot from './bot';
 
@@ -13,4 +13,4 @@ import { getSearchSuggestions } from './services/CoinMarketCap/api/globalSearch'
 //     process.exit(1);
 // }
 
-getSearchSuggestions('bitcoin').then(result => console.log(result));
+getCryptocurrency(2).then(result => console.log(result));
