@@ -6,7 +6,13 @@
 // import { ICryptoCurrency, ICryptoCurrencyQuote } from './interfaces';
 // import { getCryptocurrenciesListFromAPI } from './api';
 
-import { CryptoCurrencyAmbiguousError, CryptoCurrencyNotFoundError } from './CoinMarketCapError';
+import {
+    CryptoCurrencyAmbiguousError,
+    CryptoCurrencyNotFoundError,
+    CryptoCurrencyPriceNotFoundError,
+} from './CoinMarketCapError';
+import { ICryptoCurrency, ICryptoCurrencyQuote } from './api/listing/interfaces';
+import { getCryptocurrency } from './api/listing';
 import { getSearchSuggestions } from './api/globalSearch';
 
 function areNamesEqual(query: string, target: string): boolean {
@@ -22,12 +28,6 @@ function areSymbolsEqual(query: string, target: string): boolean {
 
     return normalizedQuery === target;
 }
-
-// function getCurrencyQuoteByName(currency: ICryptoCurrency, query: string): ICryptoCurrencyQuote | null {
-//     const searchResult = currency.quotes.find(quote => quote.name === query);
-
-//     return searchResult ?? null;
-// }
 
 async function getCryptocurrencyID(query: string): Promise<number> {
     const searchSuggestions = await getSearchSuggestions(query);
@@ -46,12 +46,45 @@ async function getCryptocurrencyID(query: string): Promise<number> {
     return suggestion.id;
 }
 
+async function getCryptocurrencyWithIDAndQuery(id: number, query: string): Promise<ICryptoCurrency> {
+    const currency = await getCryptocurrency(id);
+    if (!currency) {
+        throw new CryptoCurrencyNotFoundError();
+    }
+
+    if (!areNamesEqual(query, currency.name) && !areSymbolsEqual(query, currency.symbol)) {
+        throw new CryptoCurrencyNotFoundError();
+    }
+
+    return currency;
+}
+
+function getCurrencyQuoteByName(currency: ICryptoCurrency, query: string): ICryptoCurrencyQuote {
+    const quote = currency.quotes.find(quote => quote.name === query);
+    if (!quote) {
+        throw new CryptoCurrencyPriceNotFoundError();
+    }
+
+    return quote;
+}
+
+function roundPrice(price: number) {
+    if (price < 1.0) {
+        return price;
+    }
+
+    const PRECISION = 2;
+    const power = 10 ** PRECISION;
+
+    return Math.round(price * power) / power;
+}
+
 export default async function getPriceOfCryptocurrency(query: string): Promise<number> {
     const id = await getCryptocurrencyID(query);
-    // const currency = await getCryptocurrencyByID(id);
+    const currency = await getCryptocurrencyWithIDAndQuery(id, query);
 
-    // const quote = getCurrencyQuoteByName(currency, 'USD');
-    // const price = roundPrice(quote.price);
+    const quote = getCurrencyQuoteByName(currency, 'USD');
+    const price = roundPrice(quote.price);
 
-    return id;
+    return price;
 }

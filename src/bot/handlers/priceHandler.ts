@@ -2,6 +2,7 @@ import { CommandContext, Context } from 'grammy';
 import type { Message } from 'grammy/types';
 
 import {
+    CryptoCurrencyAmbiguousError,
     CryptoCurrencyNotFoundError,
     CryptoCurrencyPriceNotFoundError,
 } from '../../services/CoinMarketCap/CoinMarketCapError';
@@ -21,6 +22,10 @@ export default async function priceHandler(ctx: CommandContext<Context>): Promis
         .catch(error => {
             if (error instanceof CryptoCurrencyNotFoundError || error instanceof CryptoCurrencyPriceNotFoundError) {
                 return ctx.reply(text['command:price:not-found']);
+            }
+
+            if (error instanceof CryptoCurrencyAmbiguousError) {
+                return ctx.reply(text['command:price:ambiguous']);
             }
 
             console.log(error.message);
