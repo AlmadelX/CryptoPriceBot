@@ -6,26 +6,22 @@
 // import { ICryptoCurrency, ICryptoCurrencyQuote } from './interfaces';
 // import { getCryptocurrenciesListFromAPI } from './api';
 
-// function getCurrencyBySymbol(currencies: ICryptoCurrency[], query: string): ICryptoCurrency | null {
-//     const normalizedQuery = query.trim().toLocaleUpperCase();
+import { CryptoCurrencyAmbiguousError, CryptoCurrencyNotFoundError } from './CoinMarketCapError';
+import { getSearchSuggestions } from './api/globalSearch';
 
-//     const searchResult = currencies.find(currency => currency.symbol === normalizedQuery);
+function areNamesEqual(query: string, target: string): boolean {
+    // Replace all space symbols with just a single space.
+    const normalizedQuery = query.replace(/\s+/g, ' ').toLocaleLowerCase().trim();
+    const normalizedTarget = target.toLocaleLowerCase();
 
-//     return searchResult ?? null;
-// }
+    return normalizedQuery === normalizedTarget;
+}
 
-// function getCurrencyByName(currencies: ICryptoCurrency[], query: string): ICryptoCurrency | null {
-//     // Replace all space symbols with just a single space.
-//     const normalizedQuery = query.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+function areSymbolsEqual(query: string, target: string): boolean {
+    const normalizedQuery = query.toLocaleUpperCase();
 
-//     const searchResult = currencies.find(currency => {
-//         const normalizedName = currency.name.toLocaleLowerCase();
-
-//         return normalizedName === normalizedQuery;
-//     });
-
-//     return searchResult ?? null;
-// }
+    return normalizedQuery === target;
+}
 
 // function getCurrencyQuoteByName(currency: ICryptoCurrency, query: string): ICryptoCurrencyQuote | null {
 //     const searchResult = currency.quotes.find(quote => quote.name === query);
@@ -33,23 +29,29 @@
 //     return searchResult ?? null;
 // }
 
-// async function getCryptocurrencyID(query: string): Promise<number> {
-//     const searchResponse = await api.postGlobalSearch(query);
-//     const searchSuggestions = await getSearchSuggestionsFromAPI(query);
-//     if (searchSuggestions.length === 2 && searchSuggestions[0].symbol === searchSuggestions[1].symbol) {
-//         throw new CryptoCurrencyAmbiguousError();
-//     }
+async function getCryptocurrencyID(query: string): Promise<number> {
+    const searchSuggestions = await getSearchSuggestions(query);
+    if (!searchSuggestions.length) {
+        throw new CryptoCurrencyNotFoundError();
+    }
+    if (searchSuggestions.length == 2 && searchSuggestions[0].symbol === searchSuggestions[1].symbol) {
+        throw new CryptoCurrencyAmbiguousError();
+    }
 
-//     const searchResult = searchSuggestions[0];
-// }
+    const suggestion = searchSuggestions[0];
+    if (!areNamesEqual(query, suggestion.name) && !areSymbolsEqual(query, suggestion.symbol)) {
+        throw new CryptoCurrencyNotFoundError();
+    }
+
+    return suggestion.id;
+}
 
 export default async function getPriceOfCryptocurrency(query: string): Promise<number> {
-    // const id = await getCryptocurrencyID(query);
+    const id = await getCryptocurrencyID(query);
     // const currency = await getCryptocurrencyByID(id);
 
     // const quote = getCurrencyQuoteByName(currency, 'USD');
     // const price = roundPrice(quote.price);
-    query;
 
-    return 123;
+    return id;
 }

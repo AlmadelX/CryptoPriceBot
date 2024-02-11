@@ -1,6 +1,6 @@
 // import 'dotenv/config';
 
-import { getCryptocurrency } from './services/CoinMarketCap/api/listing';
+import getPriceOfCryptocurrency from './services/CoinMarketCap';
 
 // import runBot from './bot';
 
@@ -13,4 +13,4 @@ import { getCryptocurrency } from './services/CoinMarketCap/api/listing';
 //     process.exit(1);
 // }
 
-getCryptocurrency(2).then(result => console.log(result));
+getPriceOfCryptocurrency('bico').then(result => console.log(result));
