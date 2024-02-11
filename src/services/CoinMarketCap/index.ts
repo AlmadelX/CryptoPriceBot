@@ -67,7 +67,6 @@ function roundPrice(price: number) {
         price *= 10;
         ++power;
     }
-    console.log(price);
 
     return Math.round(price * 100) / 10 ** power;
 }
