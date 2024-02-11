@@ -6,11 +6,7 @@
 // import { ICryptoCurrency, ICryptoCurrencyQuote } from './interfaces';
 // import { getCryptocurrenciesListFromAPI } from './api';
 
-import {
-    CryptoCurrencyAmbiguousError,
-    CryptoCurrencyNotFoundError,
-    CryptoCurrencyPriceNotFoundError,
-} from './CoinMarketCapError';
+import { CryptoCurrencyNotFoundError, CryptoCurrencyPriceNotFoundError } from './CoinMarketCapError';
 import { ICryptoCurrency, ICryptoCurrencyQuote } from './api/listing/interfaces';
 import { getCryptocurrency } from './api/listing';
 import { getSearchSuggestions } from './api/globalSearch';
@@ -33,9 +29,6 @@ async function getCryptocurrencyID(query: string): Promise<number> {
     const searchSuggestions = await getSearchSuggestions(query);
     if (!searchSuggestions.length) {
         throw new CryptoCurrencyNotFoundError();
-    }
-    if (searchSuggestions.length == 2 && searchSuggestions[0].symbol === searchSuggestions[1].symbol) {
-        throw new CryptoCurrencyAmbiguousError();
     }
 
     const suggestion = searchSuggestions[0];
@@ -69,22 +62,22 @@ function getCurrencyQuoteByName(currency: ICryptoCurrency, query: string): ICryp
 }
 
 function roundPrice(price: number) {
-    if (price < 1.0) {
-        return price;
+    let power = 2;
+    while (price < 1.0) {
+        price *= 10;
+        ++power;
     }
+    console.log(price);
 
-    const PRECISION = 2;
-    const power = 10 ** PRECISION;
-
-    return Math.round(price * power) / power;
+    return Math.round(price * 100) / 10 ** power;
 }
 
-export default async function getPriceOfCryptocurrency(query: string): Promise<number> {
+export default async function getNameAndPriceOfCryptocurrency(query: string): Promise<[string, number]> {
     const id = await getCryptocurrencyID(query);
     const currency = await getCryptocurrencyWithIDAndQuery(id, query);
 
     const quote = getCurrencyQuoteByName(currency, 'USD');
     const price = roundPrice(quote.price);
 
-    return price;
+    return [currency.name, price];
 }

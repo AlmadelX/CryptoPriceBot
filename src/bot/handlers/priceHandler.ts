@@ -2,11 +2,10 @@ import { CommandContext, Context } from 'grammy';
 import type { Message } from 'grammy/types';
 
 import {
-    CryptoCurrencyAmbiguousError,
     CryptoCurrencyNotFoundError,
     CryptoCurrencyPriceNotFoundError,
 } from '../../services/CoinMarketCap/CoinMarketCapError';
-import getPriceOfCryptocurrency from '../../services/CoinMarketCap';
+import getNameAndPriceOfCryptocurrency from '../../services/CoinMarketCap';
 
 import text from '../../../assets/text.json';
 
@@ -17,15 +16,11 @@ export default async function priceHandler(ctx: CommandContext<Context>): Promis
         return ctx.reply(text['command:price:empty-query']);
     }
 
-    return getPriceOfCryptocurrency(query)
-        .then(price => ctx.reply(`$${price}`))
+    return getNameAndPriceOfCryptocurrency(query)
+        .then(([name, price]) => ctx.reply(`${name}: $${price}`))
         .catch(error => {
             if (error instanceof CryptoCurrencyNotFoundError || error instanceof CryptoCurrencyPriceNotFoundError) {
                 return ctx.reply(text['command:price:not-found']);
-            }
-
-            if (error instanceof CryptoCurrencyAmbiguousError) {
-                return ctx.reply(text['command:price:ambiguous']);
             }
 
             console.log(error.message);

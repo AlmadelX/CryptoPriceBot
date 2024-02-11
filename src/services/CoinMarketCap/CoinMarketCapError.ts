@@ -26,12 +26,6 @@ export class CryptoCurrencyNotFoundError extends CoinMarketCapError {
     }
 }
 
-export class CryptoCurrencyAmbiguousError extends CoinMarketCapError {
-    constructor() {
-        super('Cryptocurrency search results are ambiguous');
-    }
-}
-
 export class CryptoCurrencyPriceNotFoundError extends CoinMarketCapError {
     constructor() {
         super('Cryptocurrency price is not found on CoinMarketCap');
