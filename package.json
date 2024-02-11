@@ -5,7 +5,7 @@
     "main": "dist/main.js",
     "types": "dist/main.d.ts",
     "scripts": {
-        "clear": "rimraf dist/*",
+        "clear": "rimraf --glob dist/*",
         "build": "tsc",
         "start": "npm run clear && npm run build && node dist/src/main.js",
         "lint": "eslint . --ext .ts"
