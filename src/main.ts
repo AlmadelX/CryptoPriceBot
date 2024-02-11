@@ -1,12 +1,16 @@
-import 'dotenv/config';
+// import 'dotenv/config';
 
-import runBot from './bot';
+import { getSearchSuggestions } from './services/CoinMarketCap/api/globalSearch';
 
-const token = process.env.BOT_TOKEN;
+// import runBot from './bot';
 
-if (token) {
-    runBot(token);
-} else {
-    console.log('Error: BOT_TOKEN is not specified!');
-    process.exit(1);
-}
+// const token = process.env.BOT_TOKEN;
+
+// if (token) {
+//     runBot(token);
+// } else {
+//     console.log('Error: BOT_TOKEN is not specified!');
+//     process.exit(1);
+// }
+
+getSearchSuggestions('bitcoin').then(result => console.log(result));

@@ -1,0 +1,13 @@
+
+> crypto-price-bot@1.0.0 start
+> npm run clear && npm run build && node dist/src/main.js
+
+
+> crypto-price-bot@1.0.0 clear
+> rimraf --glob dist/*
+
+
+> crypto-price-bot@1.0.0 build
+> tsc
+
+Bot started

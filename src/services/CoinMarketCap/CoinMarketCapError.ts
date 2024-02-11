@@ -9,8 +9,8 @@ class CoinMarketCapError extends Error {
 }
 
 export class GetResponseFromAPIError extends CoinMarketCapError {
-    constructor(originalError: Error) {
-        super('Failed to get response from CoinMarketCap', originalError);
+    constructor(endpoint: string, originalError: Error) {
+        super(`Failed to get response from CoinMarketCap: ${endpoint}`, originalError);
     }
 }
 
@@ -23,6 +23,12 @@ export class ResponseBodyValidationError extends CoinMarketCapError {
 export class CryptoCurrencyNotFoundError extends CoinMarketCapError {
     constructor() {
         super('Cryptocurrency is not found on CoinMarketCap');
+    }
+}
+
+export class CryptoCurrencyAmbiguousError extends CoinMarketCapError {
+    constructor() {
+        super('Cryptocurrency search results are ambiguous');
     }
 }
 

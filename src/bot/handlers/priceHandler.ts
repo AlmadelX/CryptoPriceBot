@@ -10,9 +10,9 @@ import getPriceOfCryptocurrency from '../../services/CoinMarketCap';
 import text from '../../../assets/text.json';
 
 export default async function priceHandler(ctx: CommandContext<Context>): Promise<Message.TextMessage> {
-    const query = ctx.match;
+    const query = ctx.match.trim();
 
-    if (query.trim() === '') {
+    if (query === '') {
         return ctx.reply(text['command:price:empty-query']);
     }
 
