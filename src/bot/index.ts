@@ -23,7 +23,7 @@ async function setupBot(token: string): Promise<Bot> {
     bot.command('help', helpHandler);
     bot.command('price', priceHandler);
 
-    bot.on('message', fallbackHandler);
+    bot.on('message:text', fallbackHandler);
 
     return bot;
 }
