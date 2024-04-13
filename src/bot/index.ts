@@ -1,7 +1,6 @@
 import { Bot } from 'grammy';
 import { run } from '@grammyjs/runner';
 
-import fallbackHandler from './handlers/fallbackHandler';
 import helpHandler from './handlers/helpHandler';
 import priceHandler from './handlers/priceHandler';
 import startHandler from './handlers/startHandler';
@@ -22,8 +21,6 @@ async function setupBot(token: string): Promise<Bot> {
     bot.command('start', startHandler);
     bot.command('help', helpHandler);
     bot.command('price', priceHandler);
-
-    bot.on('message:text', fallbackHandler);
 
     return bot;
 }
